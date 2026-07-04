@@ -7,7 +7,7 @@
 <meta name="description" content="A friendly book club that reads one AI/ML book every month, discusses it on Discord, and sits down with the author when we're done. Everyone's welcome.">
 <meta property="og:title" content="AI Book Club">
 <meta property="og:description" content="One AI/ML book a month, discussion on Discord, and author chats when we finish. Everyone's welcome.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✳️</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 32'%3E%3Cpath d='M18 7 C14.5 4.6 8.8 4.2 5 5.8 L5 25.4 C8.8 23.8 14.5 24.2 18 26.6 C21.5 24.2 27.2 23.8 31 25.4 L31 5.8 C27.2 4.2 21.5 4.6 18 7 Z M18 7 L18 26.6' fill='none' stroke='%23bc4a1f' stroke-width='2.6' stroke-linejoin='round' stroke-linecap='round'/%3E%3Cpath d='M23.6 5.1 h4.4 v6.2 l-2.2 -1.7 -2.2 1.7 Z' fill='%23bc4a1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -55,10 +55,11 @@ header{
 }
 .wordmark{
   font-family:var(--serif);font-weight:600;font-size:1.25rem;letter-spacing:-.01em;
-  color:var(--ink);text-decoration:none;display:flex;align-items:baseline;gap:.45rem;
+  color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.55rem;
 }
-.wordmark .ast{color:var(--accent);display:inline-block;animation:spin 26s linear infinite;transform-origin:50% 54%}
-@keyframes spin{to{transform:rotate(360deg)}}
+.wordmark svg{width:27px;height:auto;flex:0 0 auto}
+.wordmark .cover{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.wordmark .ribbon{fill:var(--accent)}
 .nav-links{display:flex;gap:26px;list-style:none;align-items:center}
 .nav-links a{
   color:var(--ink);text-decoration:none;font-size:.86rem;font-weight:500;
@@ -138,10 +139,13 @@ h1 em{font-style:italic;color:var(--accent)}
 }
 .hero-actions{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
 .hero-orn{
-  position:absolute;right:28px;top:110px;
-  font-family:var(--serif);color:var(--accent);font-size:clamp(4rem,9vw,7.5rem);line-height:1;
-  animation:spin 40s linear infinite;user-select:none;opacity:.9;
+  position:absolute;right:48px;top:130px;width:clamp(120px,14vw,190px);
+  animation:float 7s ease-in-out infinite;user-select:none;
 }
+.hero-orn .cover{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;opacity:.85}
+.hero-orn .ribbon{fill:var(--accent)}
+.hero-orn .lines{stroke:var(--line);stroke-width:1.3;stroke-linecap:round}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(-1deg)}}
 @media(max-width:880px){.hero-orn{display:none}}
 
 /* rise-in on load */
@@ -331,7 +335,12 @@ footer{
 
 <header>
   <div class="header-inner">
-    <a class="wordmark" href="#home"><span class="ast">✳</span>AI Book Club</a>
+    <a class="wordmark" href="#home">
+      <svg viewBox="0 0 36 32" aria-hidden="true">
+        <path class="cover" d="M18 7 C14.5 4.6 8.8 4.2 5 5.8 L5 25.4 C8.8 23.8 14.5 24.2 18 26.6 C21.5 24.2 27.2 23.8 31 25.4 L31 5.8 C27.2 4.2 21.5 4.6 18 7 Z M18 7 L18 26.6"/>
+        <path class="ribbon" d="M23.6 5.1 h4.4 v6.2 l-2.2 -1.7 -2.2 1.7 Z"/>
+      </svg>
+      AI Book Club</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <ul class="nav-links">
       <li><a href="#reading">Now Reading</a></li>
@@ -346,7 +355,11 @@ footer{
 <!-- ============ HERO ============ -->
 <section id="home">
   <div class="container">
-    <span class="hero-orn" aria-hidden="true">✳</span>
+    <svg class="hero-orn" viewBox="0 0 36 32" aria-hidden="true">
+      <path class="cover" d="M18 7 C14.5 4.6 8.8 4.2 5 5.8 L5 25.4 C8.8 23.8 14.5 24.2 18 26.6 C21.5 24.2 27.2 23.8 31 25.4 L31 5.8 C27.2 4.2 21.5 4.6 18 7 Z M18 7 L18 26.6"/>
+      <path class="lines" d="M8.2 10.2 C11 9.2 13.4 9.4 15.3 10.4 M8.2 14 C11 13 13.4 13.2 15.3 14.2 M8.2 17.8 C11 16.8 13.4 17 15.3 18 M8.2 21.6 C11 20.6 13.4 20.8 15.3 21.8 M20.7 14.2 C22.6 13.2 25 13 27.8 14 M20.7 18 C22.6 17 25 17.2 27.8 18.2 M20.7 21.8 C22.6 20.8 25 21 27.8 22"/>
+      <path class="ribbon" d="M23.6 5.1 h4.4 v6.2 l-2.2 -1.7 -2.2 1.7 Z"/>
+    </svg>
     <p class="hero-kicker rise">A book club, est. 2021 · everyone's welcome</p>
     <h1>
       <span class="rise" style="animation-delay:.08s;display:block">Reading our way</span>
@@ -460,7 +473,7 @@ footer{
 
 <!-- ============ PULL QUOTE ============ -->
 <blockquote class="pullquote reveal">
-  <span class="ast" aria-hidden="true">✳</span>
+  <span class="ast" aria-hidden="true">❧</span>
   <p>“To practice any art, no matter how well or badly, is a way to make your soul grow. So do it.”</p>
   <cite>Kurt Vonnegut</cite>
 </blockquote>
@@ -568,7 +581,7 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 
 /* ticker of past books */
 const tickerBooks = VIDEOS.filter(v => v.title !== "Meet the Author").map(v => v.title);
-const tickerHTML = tickerBooks.map(t => `<span>${esc(t)}</span><span class="sep">✳</span>`).join("");
+const tickerHTML = tickerBooks.map(t => `<span>${esc(t)}</span><span class="sep">❧</span>`).join("");
 document.getElementById("tickerTrack").innerHTML = tickerHTML + tickerHTML;
 
 /* mobile nav */
