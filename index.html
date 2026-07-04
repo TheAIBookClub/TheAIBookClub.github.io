@@ -1,250 +1,535 @@
 <!doctype html>
-<html lang="en-gb" class="no-js">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>DS-ML-BookClub</title>
-<meta name="description" content="">
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="css/isotope.css" media="screen" />
-<link rel="stylesheet" href="js/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
-<link rel="stylesheet" type="text/css" href="css/da-slider.css" />
-<link rel="stylesheet" href="css/styles.css" />
-<link href="css/font-awesome.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Book Club — We read the books behind the AI revolution</title>
+<meta name="description" content="AI Book Club: we read one AI/ML book every month, discuss it on Discord, and chat with the authors. Join us!">
+<meta property="og:title" content="AI Book Club">
+<meta property="og:description" content="One AI/ML book a month, async discussion on Discord, and live chats with the authors.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080f;
+  --bg-soft:#0d0d18;
+  --card:#12121f;
+  --card-edge:#1e1e30;
+  --text:#e8e8f2;
+  --muted:#9a9ab0;
+  --violet:#8b5cf6;
+  --cyan:#22d3ee;
+  --pink:#f472b6;
+  --grad:linear-gradient(100deg,var(--violet),var(--cyan));
+  --radius:18px;
+  --display:"Space Grotesk",system-ui,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+::selection{background:var(--violet);color:#fff}
+
+/* ---------- backdrop ---------- */
+.aurora{
+  position:fixed;inset:0;z-index:-2;overflow:hidden;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%,rgba(139,92,246,.18),transparent 60%),
+    radial-gradient(50rem 35rem at -10% 25%,rgba(34,211,238,.12),transparent 60%),
+    radial-gradient(45rem 40rem at 60% 110%,rgba(244,114,182,.10),transparent 60%),
+    var(--bg);
+}
+.aurora::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(70rem 45rem at 50% 0%,#000 0%,transparent 75%);
+}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(8,8,15,.65);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-inner{
+  max-width:1120px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:64px;
+}
+.logo{
+  font-family:var(--display);font-weight:700;font-size:1.15rem;
+  color:var(--text);text-decoration:none;letter-spacing:-.02em;
+  display:flex;align-items:center;gap:.55rem;
+}
+.logo .mark{
+  width:30px;height:30px;border-radius:9px;background:var(--grad);
+  display:grid;place-items:center;font-size:15px;
+  box-shadow:0 0 18px rgba(139,92,246,.55);
+}
+.nav-links{display:flex;gap:6px;list-style:none;align-items:center}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:500;
+  padding:8px 13px;border-radius:10px;transition:.2s;
+}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.nav-cta{
+  background:var(--grad)!important;color:#fff!important;font-weight:600!important;
+}
+.nav-toggle{display:none;background:none;border:0;color:var(--text);font-size:1.5rem;cursor:pointer;padding:6px}
+@media(max-width:860px){
+  .nav-toggle{display:block}
+  .nav-links{
+    position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;
+    background:rgba(10,10,18,.97);padding:12px 20px 20px;gap:4px;
+    border-bottom:1px solid rgba(255,255,255,.08);display:none;
+  }
+  .nav-links.open{display:flex}
+}
+
+/* ---------- shared ---------- */
+section{max-width:1120px;margin:0 auto;padding:96px 24px 0}
+.kicker{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:14px;
+}
+.kicker::before{content:"";width:22px;height:2px;background:var(--grad);border-radius:2px}
+h2{
+  font-family:var(--display);font-size:clamp(1.8rem,4vw,2.6rem);
+  font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px;
+}
+.lead{color:var(--muted);max-width:640px}
+a.inline{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(34,211,238,.35)}
+a.inline:hover{border-bottom-color:var(--cyan)}
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-family:var(--display);font-weight:600;font-size:1rem;
+  padding:13px 26px;border-radius:14px;text-decoration:none;transition:.22s;
+  cursor:pointer;border:0;
+}
+.btn-primary{
+  background:var(--grad);color:#fff;
+  box-shadow:0 8px 30px rgba(139,92,246,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(139,92,246,.5)}
+.btn-ghost{
+  color:var(--text);background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- hero ---------- */
+#home{padding-top:170px;text-align:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.85rem;color:var(--muted);
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;
+  padding:7px 16px;margin-bottom:28px;background:rgba(255,255,255,.04);
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+h1{
+  font-family:var(--display);
+  font-size:clamp(2.6rem,6.5vw,4.6rem);
+  font-weight:700;letter-spacing:-.04em;line-height:1.06;
+  max-width:900px;margin:0 auto 22px;
+}
+h1 .grad{
+  background:linear-gradient(100deg,var(--violet) 10%,var(--cyan) 55%,var(--pink) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{color:var(--muted);font-size:1.15rem;max-width:620px;margin:0 auto 36px}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-quote{
+  margin:64px auto 0;max-width:560px;color:var(--muted);font-style:italic;font-size:.98rem;
+}
+.hero-quote span{display:block;margin-top:6px;font-style:normal;font-size:.85rem;color:#6b6b85}
+
+/* stats */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:760px;margin:56px auto 0;
+}
+.stat{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius);padding:22px 12px;
+}
+.stat b{
+  font-family:var(--display);font-size:1.9rem;font-weight:700;display:block;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{font-size:.85rem;color:var(--muted)}
+@media(max-width:560px){.stats{grid-template-columns:1fr;max-width:320px}}
+
+/* ---------- now reading ---------- */
+.reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px}
+@media(max-width:820px){.reading-grid{grid-template-columns:1fr}}
+.book-card{
+  display:flex;gap:26px;align-items:center;
+  background:var(--card);border:1px solid var(--card-edge);
+  border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;
+  transition:.25s;
+}
+.book-card:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.5)}
+.book-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(24rem 14rem at 110% -20%,rgba(139,92,246,.16),transparent 70%);
+  pointer-events:none;
+}
+.book{
+  flex:0 0 118px;height:168px;border-radius:6px 12px 12px 6px;position:relative;
+  padding:16px 12px 12px 18px;display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:12px 14px 34px rgba(0,0,0,.5);
+  transform:perspective(700px) rotateY(-14deg);transition:.3s;
+}
+.book-card:hover .book{transform:perspective(700px) rotateY(-6deg)}
+.book::before{
+  content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;
+  background:rgba(255,255,255,.25);
+}
+.book.violet{background:linear-gradient(160deg,#7c3aed,#4c1d95)}
+.book.cyan{background:linear-gradient(160deg,#0891b2,#164e63)}
+.book b{font-family:var(--display);font-size:.82rem;line-height:1.3;color:#fff;letter-spacing:-.01em}
+.book i{font-style:normal;font-size:.62rem;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.1em}
+.book-meta{position:relative}
+.book-meta .tag{
+  display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--cyan);background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);
+  padding:3px 10px;border-radius:999px;margin-bottom:10px;
+}
+.book-meta h3{font-family:var(--display);font-size:1.25rem;line-height:1.3;letter-spacing:-.02em;margin-bottom:8px}
+.book-meta p{font-size:.92rem;color:var(--muted);margin-bottom:14px}
+@media(max-width:480px){.book-card{flex-direction:column;text-align:center}.book{transform:none}}
+
+/* ---------- past readings ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0 26px}
+.filter-btn{
+  font-family:var(--display);font-size:.9rem;font-weight:600;color:var(--muted);
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  padding:9px 20px;border-radius:999px;cursor:pointer;transition:.2s;
+}
+.filter-btn:hover{color:var(--text)}
+.filter-btn.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(139,92,246,.4)}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:960px){.video-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.video-grid{grid-template-columns:1fr}}
+.video-card{
+  background:var(--card);border:1px solid var(--card-edge);border-radius:var(--radius);
+  overflow:hidden;transition:.25s;display:flex;flex-direction:column;
+}
+.video-card:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.45);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.video-card.hidden{display:none}
+.thumb{
+  position:relative;aspect-ratio:16/9;cursor:pointer;background:#000;border:0;padding:0;display:block;width:100%;
+}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:.25s}
+.thumb:hover img{opacity:1;transform:scale(1.03)}
+.thumb .play{
+  position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;
+}
+.thumb .play span{
+  width:56px;height:56px;border-radius:50%;background:rgba(8,8,15,.72);
+  border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(4px);
+  display:grid;place-items:center;transition:.25s;
+}
+.thumb:hover .play span{background:var(--violet);box-shadow:0 0 26px rgba(139,92,246,.7)}
+.thumb .play svg{width:20px;height:20px;fill:#fff;margin-left:3px}
+.thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.video-info h3{font-family:var(--display);font-size:.98rem;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.badge{
+  align-self:flex-start;font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  padding:3px 10px;border-radius:999px;
+}
+.badge.ml{color:#c4b5fd;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.35)}
+.badge.de{color:#67e8f9;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3)}
+
+/* ---------- how it works ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.step{
+  background:var(--card);border:1px solid var(--card-edge);border-radius:var(--radius);
+  padding:30px 26px;position:relative;overflow:hidden;transition:.25s;
+}
+.step:hover{transform:translateY(-4px);border-color:rgba(244,114,182,.4)}
+.step .num{
+  font-family:var(--display);font-size:2.6rem;font-weight:700;line-height:1;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  display:block;margin-bottom:14px;
+}
+.step h3{font-family:var(--display);font-size:1.15rem;margin-bottom:8px;letter-spacing:-.02em}
+.step p{font-size:.93rem;color:var(--muted)}
+
+/* ---------- join ---------- */
+.join-panel{
+  margin-top:36px;border-radius:26px;padding:64px 34px;text-align:center;position:relative;overflow:hidden;
+  background:
+    radial-gradient(40rem 22rem at 20% -30%,rgba(139,92,246,.35),transparent 65%),
+    radial-gradient(36rem 20rem at 85% 130%,rgba(34,211,238,.25),transparent 65%),
+    var(--card);
+  border:1px solid rgba(139,92,246,.35);
+}
+.join-panel h2{margin-bottom:12px}
+.join-panel p{color:var(--muted);max-width:520px;margin:0 auto 30px}
+
+/* ---------- sponsors ---------- */
+.sponsor-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px}
+@media(max-width:720px){.sponsor-grid{grid-template-columns:1fr}}
+.sponsor{
+  background:var(--card);border:1px solid var(--card-edge);border-radius:var(--radius);
+  padding:28px;display:flex;gap:22px;align-items:center;transition:.25s;
+}
+.sponsor:hover{border-color:rgba(255,255,255,.2)}
+.sponsor .chip{
+  flex:0 0 110px;height:74px;background:#fff;border-radius:12px;
+  display:grid;place-items:center;padding:12px;
+}
+.sponsor .chip img{max-width:100%;max-height:100%;object-fit:contain}
+.sponsor p{font-size:.92rem;color:var(--muted)}
+
+/* ---------- footer ---------- */
+footer{
+  margin-top:110px;border-top:1px solid rgba(255,255,255,.07);
+  padding:36px 24px 44px;text-align:center;color:#6b6b85;font-size:.88rem;
+}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--text)}
+</style>
 </head>
-
 <body>
-<header class="header">
-  <div class="container">
-    <nav class="navbar navbar-inverse" role="navigation">
-      <div class="navbar-header">
-        <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        </div>
-      <div id="main-nav" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav" id="mainNav">
-          <li class="active"><a href="#home" class="scroll-link">Home</a></li>
-          <li><a href="#aboutUs" class="scroll-link">About Us</a></li>
-          <li><a href="#readings" class="scroll-link">Readings</a></li>
-          <li><a href="#recommendations" class="scroll-link">Book recommendations</a></li>
-          <li><a href="#joinus" class="scroll-link">Join us</a></li>
-          <li><a href="#sponsor" class="scroll-link">Sponsor</a></li>
-        </ul>
-      </div>
-    </nav>
+<div class="aurora" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#home"><span class="mark">📚</span>AI&nbsp;Book&nbsp;Club</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="#reading">Now Reading</a></li>
+      <li><a href="#readings">Past Readings</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#sponsor">Sponsors</a></li>
+      <li><a class="nav-cta" href="https://discord.com/invite/6BremEf9db">Join Discord</a></li>
+    </ul>
   </div>
-</header>
-<div id="#top"></div>
+</nav>
+
+<!-- ============ HERO ============ -->
 <section id="home">
-  <div class="banner-container"> <img src="images/banner-bg.jpg" alt="banner" />
-    <!-- <div class="container banner-content"> 
-      <a href="https://discord.com/invite/6BremEf9db" class="joinUs">Join Us</a>
-    </div> -->
+  <div class="hero-badge"><span class="dot"></span>Reading one AI book every month since 2021</div>
+  <h1>We read the books<br>behind the <span class="grad">AI revolution</span>.</h1>
+  <p class="hero-sub">One AI/ML book a month. Async discussion on Discord. Live chats
+    with the authors when we finish. No pressure, just curiosity.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="https://discord.com/invite/6BremEf9db">Join the club →</a>
+    <a class="btn btn-ghost" href="#readings">Watch author chats</a>
   </div>
-</section>
-<section id="introText">
-  <div class="container">
-    <div>
-      <h1><font size="+2">"To practice any art, no matter how well or badly, is a way to make your soul grow. So do it" <br><span>-Kurt Vonnegut</span></font></h1>
-    </div>
+  <div class="stats">
+    <div class="stat reveal"><b>16+</b><span>author chats recorded</span></div>
+    <div class="stat reveal"><b>1</b><span>book every month</span></div>
+    <div class="stat reveal"><b>100%</b><span>free &amp; community-run</span></div>
   </div>
+  <p class="hero-quote reveal">“To practice any art, no matter how well or badly, is a way to make
+    your soul grow. So do it.”<span>— Kurt Vonnegut</span></p>
 </section>
-<!--About-->
-<section id="aboutUs">
-  <div class="container">
-    <div class="row"> 
-      <!-- item -->
-      <div class="col-md-4 tileBox"> <img src="images/photo-1.jpg" alt="me"/> </div>
-      <div class="col-md-8 tileBox">
-        <div class="txtHead">
-          <h2>Hello, Welcome to our book club.</h2>
-          <h3>Join our book club <a href="https://discord.com/invite/6BremEf9db">here</a></h3>
-        </div>
-        <p>We read one DS/ML book every month, discuss the books asynchronously on Discord,
-           and chat with the authors (if they agree) after we finish the book. 
-          Join us for a supportive DS/ML community, reading motivation, and an opportunity to meet your favorite authors. 
 
-
-        </p>
+<!-- ============ NOW READING ============ -->
+<section id="reading">
+  <span class="kicker">Now reading</span>
+  <h2>On the shelf this month</h2>
+  <p class="lead">Grab a copy, hop into Discord, and read along at your own pace.</p>
+  <div class="reading-grid">
+    <div class="book-card reveal">
+      <div class="book violet">
+        <i>Manning</i>
+        <b>Build a Large Language Model (From Scratch)</b>
       </div>
-      <!-- end: --> 
-    </div>
-  </div>
-</section>
-<!--Quote-->
-<section id="quote" class="bg-parlex">
-  <div class="parlex-back">
-    <div class="container">
-     <div class="row">
-	<div class="col-md-12">      
-    <h2>“The important thing is not to stop questioning. Curiosity has its own reason for existing.” <span>-Albert Einstein</span></h2></div>
+      <div class="book-meta">
+        <span class="tag">AI / ML</span>
+        <h3>Build a Large Language Model (From Scratch)</h3>
+        <p>Sebastian Raschka's step-by-step guide to building, pretraining, and fine-tuning a GPT-style LLM in PyTorch.</p>
+        <a class="inline" href="https://www.manning.com/books/build-a-large-language-model-from-scratch">View the book →</a>
       </div>
     </div>
-    <!--/.container--> 
-  </div>
-</section>
-
-
-<!--Readings-->
-<section id="readings" class="page-section section appear clearfix">
-  <div class="container">
-    <div class="heading"> 
-      <!-- Heading -->
-      <h2>Readings</h2>
-      <h3>Current Reading</h3>      
-      <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a>
-      <br>
-      <a href="https://www.oreilly.com/library/view/hands-on-generative-ai/9781098149239/">Hands-On Generative AI with Transformers and Diffusion Models</a> 
-
-      <h3>Past Readings</h3>
-      <p>Here is a list of our past readings and chats with the book authors. We are super grateful for all the authors.
-        They are are incredibly generous and knowledgeable.
-      </p>
-    </div>
-    <div class="row">
-      <nav id="filter" class="col-md-12">
-        <ul>
-          <li><a href="#" class="current btn-theme btn-small" data-filter="*">All</a></li>
-          <li><a href="#" class="btn-theme btn-small" data-filter=".ML">AI/ML</a></li>
-          <li><a href="#" class="btn-theme btn-small" data-filter=".DE">Data Engineering</a></li>
-        </ul>
-      </nav>
-      <div class="col-md-12">
-        <div class="row">
-          <div class="portfolio-items isotopeWrapper clearfix" id="3">            
-
-            <article class="col-sm-4 isotopeItem DE">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/a6MUfAMczJU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem DE">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/SFo432ImNak" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/Ar8lqqHzIb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-            
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/pC-48Cc8res" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/h70elw0mCpg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/5JvyjE-OYUI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/m5uUuXSVkt4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/WWjwJ1BDkvA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/YR7TSdhf3-8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-            
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/ypt62rP3zhg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-            
-            <article class="col-sm-4 isotopeItem DE">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/JUiVGcSdDsw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/4xN9OkOuyEk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>            
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/cXGM2mFr9x4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem DE">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/UtAcCO-aNec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem DE">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/ymrcNswzoFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-            <article class="col-sm-4 isotopeItem ML">
-              <iframe width="360" height="200" src="https://www.youtube.com/embed/5vn8x0aFh-4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </article>
-
-          </div>
-        </div>
+    <div class="book-card reveal">
+      <div class="book cyan">
+        <i>O'Reilly</i>
+        <b>Hands-On Generative AI with Transformers and Diffusion Models</b>
+      </div>
+      <div class="book-meta">
+        <span class="tag">AI / ML</span>
+        <h3>Hands-On Generative AI with Transformers and Diffusion Models</h3>
+        <p>A practical tour of modern generative AI — from transformers to diffusion — with code you can run.</p>
+        <a class="inline" href="https://www.oreilly.com/library/view/hands-on-generative-ai/9781098149239/">View the book →</a>
       </div>
     </div>
   </div>
 </section>
 
-
-
-
+<!-- ============ PAST READINGS ============ -->
+<section id="readings">
+  <span class="kicker">Past readings</span>
+  <h2>Meet-the-author archive</h2>
+  <p class="lead">Every book we finish, we invite the author over. Here are the recordings —
+    we're endlessly grateful to these generous, brilliant people.</p>
+  <div class="filters" role="tablist">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="ml">AI / ML</button>
+    <button class="filter-btn" data-filter="de">Data Engineering</button>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
 </section>
 
-<!--Join us -->
-<section id="joinus" class="page-section secPad">
-  <div class="container">
-    <div class="row">
-      <div class="heading"> 
-        <!-- Heading -->
-        <h2>Join Us</h2>
-        <p>Thank you for visiting our book club! If you are interested, join our book club <a href="https://discord.com/invite/6BremEf9db">here</a>.</p>
-      </div>
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <span class="kicker">How it works</span>
+  <h2>Zero pressure, maximum curiosity</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <span class="num">01</span>
+      <h3>Pick a book</h3>
+      <p>Each month the club votes on one AI/ML or data engineering book. Sponsors often provide free e-books.</p>
     </div>
-    
+    <div class="step reveal">
+      <span class="num">02</span>
+      <h3>Read &amp; discuss async</h3>
+      <p>We discuss chapter by chapter on Discord — on your own schedule, from anywhere in the world.</p>
+    </div>
+    <div class="step reveal">
+      <span class="num">03</span>
+      <h3>Meet the author</h3>
+      <p>When we finish, we host a live Q&amp;A with the author. Ask them anything — literally.</p>
+    </div>
   </div>
-  <!--/.container--> 
+  <blockquote class="hero-quote reveal" style="text-align:center">
+    “The important thing is not to stop questioning. Curiosity has its own reason for existing.”
+    <span>— Albert Einstein</span>
+  </blockquote>
 </section>
 
-<!--Sponsor-->
-<section id="sponsor" class="secPad">
-  <div class="container">
-  <div class="heading"> 
-    <!-- Heading -->
-    <h2>Sponsor</h2>
-    <p>If you are interested in sponsoring us, please send us an <a href="mailto:sophiayang.ds@gmail.com">email</a>.</p>
+<!-- ============ JOIN ============ -->
+<section id="joinus">
+  <div class="join-panel reveal">
+    <h2>Read with us 📖</h2>
+    <p>Whether you're training your first model or your hundredth, there's a seat for you.
+      Join the Discord and say hi.</p>
+    <a class="btn btn-primary" href="https://discord.com/invite/6BremEf9db">Join the AI Book Club Discord →</a>
   </div>
-  
-  <div class="row">
+</section>
 
-    <div class="col-md-3 col-sm-6">
-      <div class="exp-wrapper">
-        <img src="images/OReilly.png" width="90" alt="Name">
-        <p>We are grateful that O'Reilly Media offers us free e-books every time we read an O'Reilly Media book.</p>
-      </div>
+<!-- ============ SPONSORS ============ -->
+<section id="sponsor">
+  <span class="kicker">Sponsors</span>
+  <h2>Powered by people who love books</h2>
+  <p class="lead">Interested in sponsoring us? Send us an
+    <a class="inline" href="mailto:sophiayang.ds@gmail.com">email</a>.</p>
+  <div class="sponsor-grid">
+    <div class="sponsor reveal">
+      <div class="chip"><img src="images/OReilly.png" alt="O'Reilly Media"></div>
+      <p>O'Reilly Media generously offers us free e-books every time we read one of their titles.</p>
     </div>
-
-    <div class="col-md-3 col-sm-6">
-      <div class="exp-wrapper">
-        <img src="images/Manning_logo.png" width="60" alt="Name">
-        <p>Thank you Manning for offering us free e-books and a discount code.</p>
-      </div>
+    <div class="sponsor reveal">
+      <div class="chip"><img src="images/Manning_logo.png" alt="Manning Publications"></div>
+      <p>Manning supports us with free e-books and a discount code for club members.</p>
     </div>
-
   </div>
+</section>
 
+<footer>
+  <p>© <span id="year"></span> AI Book Club · built with 📚 and ☕ ·
+    <a href="https://discord.com/invite/6BremEf9db">Discord</a> ·
+    <a href="mailto:sophiayang.ds@gmail.com">Contact</a></p>
+</footer>
 
-     
-  </div>		
-  </section>
+<script>
+/* ---- past readings data: add new books here ---- */
+const VIDEOS = [
+  {id:"a6MUfAMczJU", tag:"de", title:"Machine Learning Engineering in Action — with Ben Wilson"},
+  {id:"SFo432ImNak", tag:"de", title:"Scaling Machine Learning with Spark — with Adi Polak"},
+  {id:"Ar8lqqHzIb4", tag:"ml", title:"Modeling Mindsets — with Christoph Molnar"},
+  {id:"pC-48Cc8res", tag:"ml", title:"Causal Inference in Python — with Matheus Facure"},
+  {id:"h70elw0mCpg", tag:"ml", title:"Machine Learning Q and AI — with Sebastian Raschka"},
+  {id:"5JvyjE-OYUI", tag:"ml", title:"Generative Deep Learning — with David Foster"},
+  {id:"m5uUuXSVkt4", tag:"ml", title:"Deep Learning with PyTorch — with Eli Stevens, Luca Antiga &amp; Thomas Viehmann"},
+  {id:"WWjwJ1BDkvA", tag:"ml", title:"Designing Machine Learning Systems — with Chip Huyen"},
+  {id:"YR7TSdhf3-8", tag:"ml", title:"NLP with Transformers — with Lewis Tunstall (Hugging Face)"},
+  {id:"ypt62rP3zhg", tag:"ml", title:"Reliable Machine Learning — author interview"},
+  {id:"JUiVGcSdDsw", tag:"de", title:"Meet the Author — book club session"},
+  {id:"4xN9OkOuyEk", tag:"ml", title:"Meet the Author — book club session"},
+  {id:"cXGM2mFr9x4", tag:"ml", title:"Machine Learning Design Patterns — ML engineering at Google"},
+  {id:"UtAcCO-aNec", tag:"de", title:"Fundamentals of Data Engineering — meet the authors"},
+  {id:"ymrcNswzoFk", tag:"de", title:"Effective Data Science Infrastructure — with Ville Tuulos"},
+  {id:"5vn8x0aFh-4", tag:"ml", title:"Explainable AI for Practitioners — author interview"},
+];
+const TAG_LABEL = {ml:"AI / ML", de:"Data Eng"};
 
-<!--[if lte IE 8]><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script><![endif]--> 
-<script src="js/modernizr-latest.js"></script> 
-<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script> 
-<script src="js/bootstrap.min.js" type="text/javascript"></script> 
-<script src="js/jquery.isotope.min.js" type="text/javascript"></script> 
-<script src="js/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script> 
-<script src="js/jquery.nav.js" type="text/javascript"></script> 
-<script src="js/jquery.cslider.js" type="text/javascript"></script> 
-<script src="js/jquery.diagram.js"></script> 
-<script src="js/custom.js" type="text/javascript"></script> 
-<script src="js/owl-carousel/owl.carousel.js"></script>
+const grid = document.getElementById("videoGrid");
+grid.innerHTML = VIDEOS.map(v => `
+  <article class="video-card reveal" data-tag="${v.tag}">
+    <button class="thumb" data-id="${v.id}" aria-label="Play: ${v.title}">
+      <img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}">
+      <span class="play"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+    </button>
+    <div class="video-info">
+      <span class="badge ${v.tag}">${TAG_LABEL[v.tag]}</span>
+      <h3>${v.title}</h3>
+    </div>
+  </article>`).join("");
+
+/* click-to-play (loads YouTube only on demand) */
+grid.addEventListener("click", e => {
+  const btn = e.target.closest(".thumb");
+  if (!btn || btn.querySelector("iframe")) return;
+  const iframe = document.createElement("iframe");
+  iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.id}?autoplay=1`;
+  iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+  iframe.allowFullscreen = true;
+  btn.appendChild(iframe);
+});
+
+/* filters */
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".filter-btn.active").classList.remove("active");
+    btn.classList.add("active");
+    const f = btn.dataset.filter;
+    document.querySelectorAll(".video-card").forEach(card => {
+      card.classList.toggle("hidden", f !== "all" && card.dataset.tag !== f);
+    });
+  });
+});
+
+/* mobile nav */
+const toggle = document.querySelector(".nav-toggle");
+const links = document.querySelector(".nav-links");
+toggle.addEventListener("click", () => {
+  const open = links.classList.toggle("open");
+  toggle.setAttribute("aria-expanded", open);
+});
+links.addEventListener("click", e => { if (e.target.tagName === "A") links.classList.remove("open"); });
+
+/* scroll reveal */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+}, {threshold:.12});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
