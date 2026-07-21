@@ -2,7 +2,7 @@
 
 We read one AI/ML book every month, discuss it asynchronously on [Discord](https://discord.com/invite/6BremEf9db), and chat with the authors when we finish.
 
-**Website:** https://theaibookclub.github.io/AIBookClub.github.io/
+**Website:** https://theaibookclub.github.io/
 
 ## Adding a new book
 
