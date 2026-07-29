@@ -191,6 +191,17 @@ h1 em{font-style:italic;color:var(--accent)}
 .book::before{content:"";position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:rgba(250,245,236,.4)}
 .book.ink{background:var(--ink)}
 .book.clay{background:var(--accent-deep)}
+.book-card.coming{max-width:640px}
+.book.ghost{
+  background:transparent;box-shadow:none;border:1.5px dashed #c6b998;
+  align-items:center;justify-content:center;text-align:center;gap:10px;
+}
+.book.ghost::before{display:none}
+.book.ghost i{color:var(--muted)}
+.book.ghost b{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:3.4rem;line-height:1;color:var(--accent);
+}
 .book b{font-family:var(--serif);font-weight:500;font-size:.84rem;line-height:1.35;color:var(--paper);letter-spacing:0}
 .book i{font-style:normal;font-size:.6rem;color:rgba(250,245,236,.7);text-transform:uppercase;letter-spacing:.14em}
 .book-meta .tag{
@@ -387,33 +398,20 @@ footer{
   <div class="container">
     <div class="section-head reveal">
       <span class="no">№ 01</span>
-      <h2>On the shelf this month</h2>
-      <span class="aside">Read along at your own pace</span>
+      <h2>Next read: August 2026</h2>
+      <span class="aside">Announcing soon</span>
     </div>
-    <div class="reading-grid">
-      <div class="book-card reveal">
-        <div class="book ink">
-          <i>Manning</i>
-          <b>Build a Large Language Model (From Scratch)</b>
-        </div>
-        <div class="book-meta">
-          <span class="tag">AI / ML</span>
-          <h3>Build a Large Language Model (From Scratch)</h3>
-          <p>Sebastian Raschka's step-by-step guide to building, pretraining, and fine-tuning a GPT-style LLM in PyTorch.</p>
-          <a class="inline" href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Get the book ↗</a>
-        </div>
+    <div class="book-card coming reveal">
+      <div class="book ghost" aria-hidden="true">
+        <i>Aug 2026</i>
+        <b>?</b>
       </div>
-      <div class="book-card reveal">
-        <div class="book clay">
-          <i>O'Reilly</i>
-          <b>Hands-On Generative AI with Transformers and Diffusion Models</b>
-        </div>
-        <div class="book-meta">
-          <span class="tag">AI / ML</span>
-          <h3>Hands-On Generative AI with Transformers and Diffusion Models</h3>
-          <p>A practical tour of modern generative AI — from transformers to diffusion — with code you can run.</p>
-          <a class="inline" href="https://www.oreilly.com/library/view/hands-on-generative-ai/9781098149239/">Get the book ↗</a>
-        </div>
+      <div class="book-meta">
+        <span class="tag">Coming soon</span>
+        <h3>The August pick is almost here</h3>
+        <p>We're choosing our next book right now. Hop into Discord to nominate your favorite and
+          vote — and be the first to know the moment it's announced.</p>
+        <a class="inline" href="https://discord.com/invite/6BremEf9db">Help choose on Discord ↗</a>
       </div>
     </div>
   </div>
