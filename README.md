@@ -8,6 +8,6 @@ We read one AI/ML book every month, discuss it asynchronously on [Discord](https
 
 Everything lives in a single `index.html`:
 
-- **Next read / now reading:** edit the `.book-card` block in the `#reading` section (currently a "coming soon" placeholder).
+- **Now reading:** edit the `.book-card` block in the `#reading` section.
 - **Past readings:** add one line to the `VIDEOS` array at the bottom of the file, e.g.
   `{id:"<youtube-id>", tag:"ml", title:"Meet the Author: <Book Title>"}` (tags: `ml` or `de`).
